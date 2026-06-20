@@ -1,0 +1,37 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  --font-mono: var(--font-jetbrains);
+  --animate-fade-in: fade-in 0.5s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #27272a #09090b;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: #14532d;
+  color: #4ade80;
+}
+
+body {
+  background-color: #09090b;
+  color: #e4e4e7;
+}
