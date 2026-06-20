@@ -30,7 +30,7 @@ export const projects: Project[] = [
     name: "Selfim",
     description:
       "Plateforme de détection et de lutte contre la fraude documentaire et identitaire. Architecture orientée analyse et data-intensive.",
-    tags: ["Anti-fraude", "Data"],
+    tags: ["Anti-fraude", "Data", "OpenShift"],
     status: "production",
     year: "2024-2025",
   },
