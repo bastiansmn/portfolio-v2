@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const jetbrains = JetBrains_Mono({
+const jetbrains = localFont({
+  src: "./jbm.woff2",
   variable: "--font-jetbrains",
-  subsets: ["latin"],
   display: "swap",
 });
 
