@@ -11,6 +11,8 @@ export interface Profile {
   /** Rôles affichés en en-tête. Le premier sert aussi de titre au CV. */
   roles: string[];
   location: string;
+  /** Photo affichée dans le CV : chemin depuis la racine du dépôt, par ex. "assets/photo.jpg" (jpg, png ou webp). */
+  photo?: string;
   bio: BioLine[];
   certifications: string[];
   email: string;

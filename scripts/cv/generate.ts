@@ -45,6 +45,19 @@ function fontFace(family: string, pkgFile: string, style = "normal") {
   return `@font-face{font-family:"${family}";font-style:${style};font-weight:100 900;font-display:block;src:url(data:font/woff2;base64,${data}) format("woff2");}`;
 }
 
+/** Photo du profil encodée en data URI, ou null si absente. */
+function photoDataUri(): string | null {
+  if (!profile.photo) return null;
+  const file = path.join(process.cwd(), profile.photo);
+  if (!fs.existsSync(file)) {
+    console.warn(`⚠ Photo introuvable : ${profile.photo} (le CV est généré sans photo).`);
+    return null;
+  }
+  const ext = path.extname(file).slice(1).toLowerCase();
+  const mime = ext === "jpg" ? "jpeg" : ext;
+  return `data:image/${mime};base64,${fs.readFileSync(file).toString("base64")}`;
+}
+
 const LEVEL_DOTS: Record<Skill["level"], number> = {
   expert: 3,
   avancé: 2,
@@ -71,6 +84,7 @@ const slug = (s: string) =>
 /* ------------------------------------------------------------------ */
 
 function renderHtml(): string {
+  const photo = photoDataUri();
   const today = new Intl.DateTimeFormat("fr-FR", {
     month: "long",
     year: "numeric",
@@ -260,7 +274,8 @@ aside { padding: 12mm 7mm 10mm 9mm; font-size: 8.2pt; }
 main { padding: 12mm 11mm 10mm 9mm; }
 
 /* En-tête */
-.top { margin-bottom: 6mm; }
+.top { margin-bottom: 6mm; display: flex; justify-content: space-between; align-items: center; gap: 6mm; }
+.photo { width: 22mm; height: 22mm; border-radius: 50%; object-fit: cover; flex: none; border: 0.6mm solid #fff; box-shadow: 0 0 0 0.4mm var(--line); }
 .prompt { font: 500 7.5pt var(--mono); color: var(--accent); margin-bottom: 1.5mm; }
 h1 { font-size: 24pt; line-height: 1.05; font-weight: 700; letter-spacing: -0.02em; }
 .title { font: 500 11pt var(--mono); color: var(--accent); margin-top: 1.5mm; }
@@ -320,9 +335,12 @@ footer { margin-top: 4mm; font: 400 6.6pt var(--mono); color: var(--faint); }
     <aside>${sidebar}</aside>
     <main>
       <div class="top">
-        <p class="prompt">bastian@portfolio:~$ whoami</p>
-        <h1>${esc(profile.name)}</h1>
-        <p class="title">${esc(profile.roles[0] ?? "")}</p>
+        <div>
+          <p class="prompt">bastian@portfolio:~$ whoami</p>
+          <h1>${esc(profile.name)}</h1>
+          <p class="title">${esc(profile.roles[0] ?? "")}</p>
+        </div>
+        ${photo ? `<img class="photo" src="${photo}" alt="">` : ""}
       </div>
 
       <section>
