@@ -60,7 +60,9 @@ npm run cv                        # → dist/cv/CV-Bastian-SOMON.pdf
 
 Le gabarit est dans `scripts/cv/generate.ts`. Les projets sont intégrés aux expériences :
 un projet qui porte le nom d'une expérience lui apporte son lien, et un projet au nom différent
-s'y rattache via son champ `experience` dans `data/projects.ts`. Le script prévient si le CV
+s'y rattache via son champ `experience` dans `data/projects.ts`. Côté compétences, le CV n'affiche que les niveaux « avancé » et « expert » (réglage
+`minSkillLevel` dans le script) ; une compétence marquée `hideInCv: true` dans `data/stack.ts`
+reste sur le site mais pas dans le CV. Le script prévient si le CV
 dépasse une page ou si un projet n'est rattaché à aucune expérience.
 
 **Sur GitHub**, le workflow `.github/workflows/cv.yml` régénère le PDF à chaque modification

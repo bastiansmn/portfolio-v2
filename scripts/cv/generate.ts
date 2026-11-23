@@ -22,6 +22,8 @@ import { stack, type Skill } from "../../data/stack";
 /* ------------------------------------------------------------------ */
 
 const OPTIONS = {
+  /** Niveau minimum des compétences affichées dans le CV. */
+  minSkillLevel: "avancé" as Skill["level"],
   outDir: path.join(process.cwd(), "dist", "cv"),
 };
 
@@ -49,11 +51,17 @@ const LEVEL_DOTS: Record<Skill["level"], number> = {
   intermédiaire: 1,
 };
 
+/** Pastilles de niveau en SVG : taille fixe, jamais déformées par la mise en page. */
 function dots(level: Skill["level"]) {
   const n = LEVEL_DOTS[level];
-  const items = [0, 1, 2].map((i) => `<i${i < n ? ' class="on"' : ""}></i>`).join("");
-  return `<span class="dots" title="${esc(level)}">${items}</span>`;
+  const circles = [0, 1, 2]
+    .map((i) => `<circle cx="${3 + i * 8}" cy="3" r="3" fill="${i < n ? "#15803d" : "#d4d4d8"}"/>`)
+    .join("");
+  return `<svg class="dots" viewBox="0 0 22 6" aria-label="${esc(level)}">${circles}</svg>`;
 }
+
+const showSkill = (s: Skill) =>
+  !s.hideInCv && LEVEL_DOTS[s.level] >= LEVEL_DOTS[OPTIONS.minSkillLevel];
 
 const slug = (s: string) =>
   s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -97,6 +105,8 @@ function renderHtml(): string {
     <section>
       <h2>Compétences</h2>
       ${stack
+        .map((cat) => ({ ...cat, skills: cat.skills.filter(showSkill) }))
+        .filter((cat) => cat.skills.length > 0)
         .map(
           (cat) => `
         <div class="skill-cat">
@@ -112,7 +122,10 @@ function renderHtml(): string {
         </div>`
         )
         .join("")}
-      <p class="legend">${dots("expert")} expert · ${dots("avancé")} avancé · ${dots("intermédiaire")} intermédiaire</p>
+      <p class="legend">${(Object.keys(LEVEL_DOTS) as Skill["level"][])
+        .filter((l) => LEVEL_DOTS[l] >= LEVEL_DOTS[OPTIONS.minSkillLevel])
+        .map((l) => `${dots(l)} ${esc(l)}`)
+        .join(" · ")}</p>
     </section>`;
 
   // Les projets sont intégrés aux expériences : un projet qui porte le nom
@@ -265,13 +278,10 @@ section + section { margin-top: 4.5mm; }
 h3 { font-size: 8.6pt; font-weight: 600; }
 .skill-cat h3 { font-size: 7.6pt; color: var(--muted); font-weight: 600; margin-bottom: 0.8mm; }
 .skills li { list-style: none; display: flex; justify-content: space-between; gap: 2mm; line-height: 1.4; }
-.dots { display: inline-flex; gap: 0.6mm; align-self: center; flex: none; }
-.dots i { width: 1.5mm; height: 1.5mm; border-radius: 50%; background: #d4d4d8; }
-.dots i.on { background: var(--accent); }
+.dots { width: 5.5mm; height: 1.5mm; flex: none; align-self: center; display: block; }
 .cert { font: normal 600 6.2pt var(--mono); color: var(--accent); }
 .legend { margin-top: 2.5mm; font-size: 6.6pt; color: var(--muted); }
-.legend .dots { vertical-align: 0.1mm; }
-.legend .dots i { width: 1.2mm; height: 1.2mm; }
+.legend .dots { display: inline-block; width: 4.4mm; height: 1.2mm; vertical-align: 0.15mm; }
 
 /* Colonne principale */
 .bio li { list-style: none; position: relative; padding-left: 4mm; margin-bottom: 0.8mm; }
