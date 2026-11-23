@@ -214,7 +214,7 @@ function renderHtml(): string {
       <div class="employer">
         <header>
           <div>
-            <h3>${esc(employer)}${
+            <h3>${esc(employer)}${info?.title ? ` <span class="role">— ${esc(info.title)}</span>` : ""}${
               info?.url ? ` <a class="link" href="${esc(info.url)}">↗</a>` : ""
             }</h3>
             <p class="meta">${sub}</p>

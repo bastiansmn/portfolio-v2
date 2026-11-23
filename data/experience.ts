@@ -1,5 +1,7 @@
 export interface Employer {
   name: string;
+  /** Intitulé du poste chez cet employeur. */
+  title?: string;
   url?: string;
 }
 
@@ -7,6 +9,7 @@ export interface Employer {
 export const employers: Employer[] = [
   {
     name: "Act-On Technology",
+    title: "Expert Technique",
     url: "https://www.linkedin.com/company/act-on-technology/",
   },
 ];
