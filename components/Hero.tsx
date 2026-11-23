@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const ROLES = [
+  "Tech Lead",
   "Ingénieur en informatique",
   "Architecte cloud souverain",
   "Ingénieur DevOps / SRE",
