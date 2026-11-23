@@ -31,6 +31,7 @@ export const profile: Profile = {
     "Développeur full-stack",
   ],
   location: "Paris, France",
+  photo: "assets/photo.jpg",
   bio: [
     [
       "4+ ans de conception de systèmes en environnements ",

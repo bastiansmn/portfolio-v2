@@ -27,6 +27,7 @@ L'essentiel du contenu est séparé du code :
 | Contenu | Fichier |
 | --- | --- |
 | Nom, rôles, bio, certifications, liens de contact | `data/profile.ts` |
+| Photo du CV | `assets/photo.jpg` (chemin défini dans `data/profile.ts`) |
 | Projets | `data/projects.ts` |
 | Expériences | `data/experience.ts` |
 | Compétences | `data/stack.ts` |
