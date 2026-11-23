@@ -2,6 +2,8 @@ export interface Skill {
   name: string;
   level: "expert" | "avancé" | "intermédiaire";
   certified?: boolean;
+  /** Masquer cette compétence dans le CV PDF (elle reste affichée sur le site). */
+  hideInCv?: boolean;
 }
 
 export interface SkillCategory {
@@ -39,7 +41,7 @@ export const stack: SkillCategory[] = [
       { name: "ArgoCD", level: "expert" },
       { name: "GitHub Actions", level: "avancé" },
       { name: "Jenkins", level: "avancé" },
-      { name: "Helm", level: "avancé" },
+      { name: "Helm", level: "expert" },
     ],
   },
   {
@@ -74,9 +76,9 @@ export const stack: SkillCategory[] = [
     category: "Intelligence artificielle",
     skills: [
       { name: "vLLM", level: "avancé" },
-      { name: "LiteLLM", level: "avancé" },
-      { name: "OpenWebUI", level: "avancé" },
-      { name: "TEI", level: "avancé" },
+      { name: "LiteLLM", level: "avancé", hideInCv: true },
+      { name: "OpenWebUI", level: "avancé", hideInCv: true },
+      { name: "TEI", level: "avancé", hideInCv: true },
       { name: "Nvidia H100 (MIG)", level: "avancé" },
     ],
   },

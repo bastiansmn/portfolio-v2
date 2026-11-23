@@ -6,6 +6,11 @@ export interface Project {
   tags: string[];
   status: "production" | "beta" | "wip";
   year?: string;
+  /**
+   * Nom de l'expérience (champ `project` de data/experience.ts) à laquelle
+   * rattacher ce projet dans le CV, quand les noms diffèrent.
+   */
+  experience?: string;
 }
 
 export const projects: Project[] = [
@@ -41,5 +46,6 @@ export const projects: Project[] = [
     tags: ["Anti-fraude", "Data", "OpenShift"],
     status: "production",
     year: "2024-2025",
+    experience: "Cloud Pi Native",
   },
 ];

@@ -1,4 +1,23 @@
+export interface Employer {
+  name: string;
+  /** Intitulé du poste chez cet employeur. */
+  title?: string;
+  url?: string;
+}
+
+/** Employeurs : les expériences qui partagent un employeur sont regroupées dans le CV. */
+export const employers: Employer[] = [
+  {
+    name: "Act-On Technology",
+    title: "Expert Technique",
+    url: "https://www.linkedin.com/company/act-on-technology/",
+  },
+];
+
 export interface Experience {
+  /** Employeur (voir `employers`), quand l'expérience est une mission pour un client. */
+  employer?: string;
+  /** Client ou entreprise où se déroule la mission. */
   company: string;
   project: string;
   role: string;
@@ -11,6 +30,7 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
+    employer: "Act-On Technology",
     company: "Ministère de l'Intérieur",
     project: "XPN",
     role: "Tech Lead",
@@ -26,6 +46,7 @@ export const experiences: Experience[] = [
     tags: ["Tech Lead", "Encadrement", "Code review", "IA générative", "Agents IA", "MCP"],
   },
   {
+    employer: "Act-On Technology",
     company: "Ministère de l'Intérieur",
     project: "MirAI",
     role: "Ingénieur DevOps / Plateforme",
@@ -41,6 +62,7 @@ export const experiences: Experience[] = [
     tags: ["Scaleway", "Kubernetes", "Terraform", "Docker", "GitLab CI", "Souverain"],
   },
   {
+    employer: "Act-On Technology",
     company: "Ministère de l'Intérieur",
     project: "Cloud Pi Native",
     role: "Ingénieur DevOps",
@@ -55,6 +77,7 @@ export const experiences: Experience[] = [
     tags: ["Cloud-Native", "OpenShift", "GitLab CI", "DATA",]
   },
   {
+    employer: "Act-On Technology",
     company: "Ministère de l'Intérieur",
     project: "SignalIGPN",
     role: "Développeur Full-stack",

@@ -26,11 +26,11 @@ L'essentiel du contenu est séparé du code :
 
 | Contenu | Fichier |
 | --- | --- |
+| Nom, rôles, bio, certifications, liens de contact | `data/profile.ts` |
+| Photo du CV | `assets/photo.jpg` (chemin défini dans `data/profile.ts`) |
 | Projets | `data/projects.ts` |
 | Expériences | `data/experience.ts` |
 | Compétences | `data/stack.ts` |
-| Bio et rôles affichés en en-tête | `components/Hero.tsx` |
-| Liens de contact | `components/Contact.tsx` |
 | Articles de blog | `content/blog/*.mdx` |
 
 ### Ajouter un article
@@ -49,6 +49,27 @@ Contenu en Markdown / MDX…
 ```
 
 Le nom du fichier sert de slug : l'article sera accessible sur `/blog/mon-article`.
+
+## CV PDF
+
+Le CV est généré à partir des mêmes données que le site (`data/`) : une seule source de vérité.
+
+```bash
+npx playwright install chromium   # la première fois seulement
+npm run cv                        # → dist/cv/CV-Bastian-SOMON.pdf
+```
+
+Le gabarit est dans `scripts/cv/generate.ts`. Les projets sont intégrés aux expériences :
+un projet qui porte le nom d'une expérience lui apporte son lien, et un projet au nom différent
+s'y rattache via son champ `experience` dans `data/projects.ts`. Côté compétences, le CV n'affiche que les niveaux « avancé » et « expert » (réglage
+`minSkillLevel` dans le script) ; une compétence marquée `hideInCv: true` dans `data/stack.ts`
+reste sur le site mais pas dans le CV. Le script prévient si le CV
+dépasse une page ou si un projet n'est rattaché à aucune expérience.
+
+**Sur GitHub**, le workflow `.github/workflows/cv.yml` régénère le PDF à chaque modification
+de `data/` (push sur `main` ou pull request). Pour le récupérer : onglet **Actions** →
+**Générer le CV PDF** → dernier run → section **Artifacts**. Le bouton **Run workflow** permet
+aussi de le relancer à la main.
 
 ## Build et déploiement
 

@@ -1,4 +1,5 @@
 import { Mail, ExternalLink } from "lucide-react";
+import { profile } from "@/data/profile";
 
 function GithubIcon({ size = 15 }: { size?: number }) {
   return (
@@ -31,22 +32,22 @@ function LinkedinIcon({ size = 15 }: { size?: number }) {
 const links = [
   {
     Icon: Mail,
-    label: "bastian.somon@gmail.com",
-    href: "mailto:bastian.somon@gmail.com",
+    label: profile.email,
+    href: `mailto:${profile.email}`,
     color: "text-green-400",
     external: false,
   },
   {
     Icon: GithubIcon,
-    label: "github.com/bastiansmn",
-    href: "https://github.com/bastiansmn",
+    label: profile.github.label,
+    href: profile.github.url,
     color: "text-zinc-300",
     external: true,
   },
   {
     Icon: LinkedinIcon,
-    label: "linkedin.com/in/bastian-somon",
-    href: "https://www.linkedin.com/in/bastian-somon-ba7673203/",
+    label: profile.linkedin.label,
+    href: profile.linkedin.url,
     color: "text-cyan-400",
     external: true,
   },

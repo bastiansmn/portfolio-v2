@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { profile, type Highlight } from "@/data/profile";
 
-const ROLES = [
-  "Tech Lead",
-  "Ingénieur en informatique",
-  "Architecte cloud souverain",
-  "Ingénieur DevOps / SRE",
-  "Développeur full-stack",
-];
+const ROLES = profile.roles;
+
+const HIGHLIGHT_CLASS: Record<Highlight, string> = {
+  amber: "text-amber-400",
+  cyan: "text-cyan-400",
+  green: "text-green-400",
+};
 
 const ctaLinks = [
   { href: "#projets", label: "cd ./projets" },
@@ -85,7 +86,7 @@ export default function Hero() {
               </p>
               <div className="pl-4 space-y-2">
                 <p className="text-3xl md:text-4xl font-bold text-zinc-100 tracking-tight">
-                  Bastian SOMON
+                  {profile.name}
                 </p>
                 <p className="text-lg text-green-400 min-h-[1.75rem] flex items-center">
                   {displayed}
@@ -107,21 +108,20 @@ export default function Hero() {
                   <span className="text-zinc-200">cat bio.txt</span>
                 </p>
                 <div className="pl-4 space-y-2 text-sm">
-                  <p className="text-zinc-400">
-                    <span className="text-zinc-600 mr-2">&gt;</span>
-                    4+ ans de conception de systèmes en environnements{" "}
-                    <span className="text-amber-400">souverains</span> et complexes
-                  </p>
-                  <p className="text-zinc-400">
-                    <span className="text-zinc-600 mr-2">&gt;</span>
-                    Certifié{" "}
-                    <span className="text-cyan-400">Scaleway Solution Architect</span>
-                  </p>
-                  <p className="text-zinc-400">
-                    <span className="text-zinc-600 mr-2">&gt;</span>
-                    Spécialiste{" "}
-                    <span className="text-green-400">Cloud · DevOps · Architecture - Développement</span>
-                  </p>
+                  {profile.bio.map((line, i) => (
+                    <p key={i} className="text-zinc-400">
+                      <span className="text-zinc-600 mr-2">&gt;</span>
+                      {line.map((part, j) =>
+                        typeof part === "string" ? (
+                          part
+                        ) : (
+                          <span key={j} className={HIGHLIGHT_CLASS[part.highlight]}>
+                            {part.text}
+                          </span>
+                        )
+                      )}
+                    </p>
+                  ))}
                 </div>
               </div>
             )}
