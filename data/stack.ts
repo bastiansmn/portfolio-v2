@@ -26,7 +26,7 @@ export const stack: SkillCategory[] = [
     category: "Développement",
     skills: [
       { name: "TypeScript / JavaScript", level: "expert" },
-      { name: "Angular", level: "expert" },
+      { name: "Angular / React", level: "expert" },
       { name: "Python", level: "expert" },
       { name: "Java / Spring Boot", level: "expert" },
       { name: "Node.js", level: "avancé" },

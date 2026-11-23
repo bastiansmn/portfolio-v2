@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio — Bastian SOMON
 
-## Getting Started
+Portfolio et blog technique de Bastian SOMON, ingénieur Cloud / DevOps / Architecture.
 
-First, run the development server:
+🌐 [www.bastian-somon.fr](https://www.bastian-somon.fr)
+
+## Stack
+
+- [Next.js](https://nextjs.org) 16 (App Router, export statique)
+- React 19 · TypeScript
+- Tailwind CSS 4
+- MDX pour les articles de blog (`next-mdx-remote`, `gray-matter`)
+
+## Démarrer en local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le site est alors disponible sur [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Modifier le contenu
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+L'essentiel du contenu est séparé du code :
 
-## Learn More
+| Contenu | Fichier |
+| --- | --- |
+| Projets | `data/projects.ts` |
+| Expériences | `data/experience.ts` |
+| Compétences | `data/stack.ts` |
+| Bio et rôles affichés en en-tête | `components/Hero.tsx` |
+| Liens de contact | `components/Contact.tsx` |
+| Articles de blog | `content/blog/*.mdx` |
 
-To learn more about Next.js, take a look at the following resources:
+### Ajouter un article
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Créer un fichier `content/blog/mon-article.mdx` avec un en-tête :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```mdx
+---
+title: "Titre de l'article"
+date: "2026-01-01"
+description: "Résumé court affiché dans la liste des articles."
+tags: ["kubernetes", "devops"]
+---
 
-## Deploy on Vercel
+Contenu en Markdown / MDX…
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Le nom du fichier sert de slug : l'article sera accessible sur `/blog/mon-article`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Build et déploiement
+
+```bash
+npm run build   # génère le site statique dans ./out
+```
+
+Le déploiement est automatique : chaque push sur `main` déclenche le workflow
+`.github/workflows/nextjs.yml`, qui construit le site et le publie sur GitHub Pages
+(domaine personnalisé défini dans `public/CNAME`).

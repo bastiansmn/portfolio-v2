@@ -12,12 +12,27 @@ export interface Experience {
 export const experiences: Experience[] = [
   {
     company: "Ministère de l'Intérieur",
-    project: "MirAI",
-    role: "Ingénieur DevOps / Plateforme",
-    period: "2024 — Présent",
+    project: "XPN",
+    role: "Tech Lead",
+    period: "Septembre 2026 — Présent",
     location: "Paris, France",
     description:
-      "Déploiement, Amélioration continue, MCO et MCS de la plateforme d'IA souveraine \"MirAI\" dédiée au agents du ministère de l'intérieur",
+      "Tech lead du projet XPN, qui remplace LRPPN, le logiciel de rédaction des procédures de la Police nationale.",
+    achievements: [
+      "Encadrement de l'équipe et montée en compétences techniques et fonctionnelles des profils",
+      "Garantie de la qualité du code par les revues de code",
+      "Accompagnement des profils juniors vers un usage massif de l'IA dans le développement (création d'agents, MCP, skills, commandes, etc.)",
+    ],
+    tags: ["Tech Lead", "Encadrement", "Code review", "IA générative", "Agents IA", "MCP"],
+  },
+  {
+    company: "Ministère de l'Intérieur",
+    project: "MirAI",
+    role: "Ingénieur DevOps / Plateforme",
+    period: "2025-2026",
+    location: "Paris, France",
+    description:
+      "Déploiement, Amélioration continue, MCO et MCS de la plateforme d'IA souveraine \"MirAI\" dédiée aux agents du ministère de l'intérieur",
     achievements: [
       "Conception et mise en production du portail IA MirAI",
       "Déploiement de service IA pour les agents (LLM, transcription audio, OCR, code-assistant, etc)",
@@ -28,7 +43,7 @@ export const experiences: Experience[] = [
   {
     company: "Ministère de l'Intérieur",
     project: "Cloud Pi Native",
-    role: "Ingnieur DevOps",
+    role: "Ingénieur DevOps",
     period: "2024-2025",
     location: "Paris, France",
     description:

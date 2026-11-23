@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const ROLES = [
+  "Tech Lead",
   "Ingénieur en informatique",
   "Architecte cloud souverain",
   "Ingénieur DevOps / SRE",
@@ -50,8 +51,11 @@ export default function Hero() {
       );
       return () => clearTimeout(t);
     }
-    setRoleIndex((i) => (i + 1) % ROLES.length);
-    setPhase("typing");
+    const t = setTimeout(() => {
+      setRoleIndex((i) => (i + 1) % ROLES.length);
+      setPhase("typing");
+    }, 300);
+    return () => clearTimeout(t);
   }, [displayed, phase, roleIndex]);
 
   return (

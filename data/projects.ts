@@ -10,6 +10,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    name: "XPN",
+    description:
+      "Nouveau logiciel de rédaction des procédures de la Police nationale, appelé à remplacer LRPPN. Rôle de tech lead : encadrement de l'équipe, qualité du code et adoption de l'IA dans le développement.",
+    tags: ["Ministère", "Police nationale", "Tech Lead", "IA"],
+    status: "wip",
+    year: "2026",
+  },
+  {
     name: "SignalIGPN",
     description:
       "Plateforme officielle de signalements citoyens et internes pour l'Inspection Générale de la Police Nationale (IGPN). Développement et déploiement en environnement souverain.",
