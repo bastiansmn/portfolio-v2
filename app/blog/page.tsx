@@ -37,7 +37,7 @@ export default function BlogPage() {
         {posts.length === 0 ? (
           <div className="border border-zinc-800 rounded-lg p-8 text-center">
             <p className="text-zinc-500 text-sm">Aucun article pour le moment.</p>
-            <p className="text-zinc-700 text-xs mt-1 font-mono">// coming soon</p>
+            <p className="text-zinc-700 text-xs mt-1 font-mono">{"// coming soon"}</p>
           </div>
         ) : (
           <div className="space-y-4">
