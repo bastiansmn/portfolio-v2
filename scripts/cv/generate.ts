@@ -13,7 +13,7 @@ import { createRequire } from "node:module";
 import { chromium, type Browser } from "playwright";
 
 import { profile, bioLineText } from "../../data/profile";
-import { experiences } from "../../data/experience";
+import { experiences, employers, type Experience } from "../../data/experience";
 import { projects } from "../../data/projects";
 import { stack, type Skill } from "../../data/stack";
 
@@ -130,23 +130,21 @@ function renderHtml(): string {
     );
   }
 
-  const experienceHtml = experiences
-    .map((e) => ({
-      e,
-      url: projects.find((p) => key(p.name) === key(e.project))?.url,
-      related: projects.filter(
-        (p) => key(p.name) !== key(e.project) && p.experience && key(p.experience) === key(e.project)
-      ),
-    }))
-    .map(
-      ({ e, url, related }) => `
+  const renderEntry = (e: Experience, hideClient: boolean) => {
+    const url = projects.find((p) => key(p.name) === key(e.project))?.url;
+    const related = projects.filter(
+      (p) => key(p.name) !== key(e.project) && p.experience && key(p.experience) === key(e.project)
+    );
+    const meta = [
+      ...(hideClient ? [] : [esc(e.company), ...(e.location ? [esc(e.location)] : [])]),
+      ...(url ? [`<a class="link" href="${esc(url)}">${esc(shortUrl(url))}</a>`] : []),
+    ].join(" · ");
+    return `
       <article class="entry">
         <header>
           <div>
             <h3>${esc(e.project)} <span class="role">— ${esc(e.role)}</span></h3>
-            <p class="meta">${esc(e.company)}${e.location ? ` · ${esc(e.location)}` : ""}${
-              url ? ` · <a class="link" href="${esc(url)}">${esc(shortUrl(url))}</a>` : ""
-            }</p>
+            ${meta ? `<p class="meta">${meta}</p>` : ""}
           </div>
           <span class="period">${esc(e.period)}</span>
         </header>
@@ -168,8 +166,51 @@ function renderHtml(): string {
           )
           .join("")}
         <p class="tags">${e.tags.map((t) => `<span>${esc(t)}</span>`).join("")}</p>
-      </article>`
-    )
+      </article>`;
+  };
+
+  // Expériences consécutives chez un même employeur → un seul bloc, avec la
+  // période globale (calculée à partir des missions) et une ligne qui les relie.
+  const groups: { employer?: string; items: Experience[] }[] = [];
+  for (const e of experiences) {
+    const last = groups[groups.length - 1];
+    if (last && e.employer && last.employer === e.employer) last.items.push(e);
+    else groups.push({ employer: e.employer, items: [e] });
+  }
+
+  const groupPeriod = (items: Experience[]) => {
+    const years = items.flatMap((e) => (e.period.match(/\d{4}/g) ?? []).map(Number));
+    if (!years.length) return "";
+    const ongoing = items.some((e) => /présent/i.test(e.period));
+    return `${Math.min(...years)} — ${ongoing ? "Présent" : Math.max(...years)}`;
+  };
+
+  const experienceHtml = groups
+    .map(({ employer, items }) => {
+      if (!employer) return items.map((e) => renderEntry(e, false)).join("");
+      const info = employers.find((x) => key(x.name) === key(employer));
+      const clients = [...new Set(items.map((e) => e.company))];
+      const locations = [...new Set(items.map((e) => e.location).filter(Boolean))];
+      const sameClient = clients.length === 1;
+      const sub = [
+        `${items.length} mission${items.length > 1 ? "s" : ""}`,
+        ...(sameClient ? [`client : ${esc(clients[0])}`] : []),
+        ...(sameClient && locations.length === 1 ? [esc(locations[0]!)] : []),
+      ].join(" · ");
+      return `
+      <div class="employer">
+        <header>
+          <div>
+            <h3>${esc(employer)}${
+              info?.url ? ` <a class="link" href="${esc(info.url)}">↗</a>` : ""
+            }</h3>
+            <p class="meta">${sub}</p>
+          </div>
+          <span class="period">${esc(groupPeriod(items))}</span>
+        </header>
+        <div class="missions">${items.map((e) => renderEntry(e, sameClient)).join("")}</div>
+      </div>`;
+    })
     .join("");
 
 
@@ -236,6 +277,13 @@ h3 { font-size: 8.6pt; font-weight: 600; }
 .bio li { list-style: none; position: relative; padding-left: 4mm; margin-bottom: 0.8mm; }
 .bio li::before { content: ">"; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); font-weight: 600; }
 
+.employer > header { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; margin-bottom: 2mm; }
+.employer > header h3 { font-size: 10.4pt; font-weight: 700; }
+.employer > header .link { font-size: 8pt; vertical-align: 0.4mm; }
+.missions { border-left: 0.5mm solid #bbf7d0; padding-left: 4mm; margin-left: 0.8mm; }
+.missions .entry { position: relative; }
+.missions .entry::before { content: ""; position: absolute; left: calc(-4mm - 1.3mm); top: 1.1mm; width: 1.6mm; height: 1.6mm; border-radius: 50%; background: #fff; border: 0.45mm solid var(--accent); }
+.missions .entry + .entry::before { top: calc(2.6mm + 1.1mm); }
 .entry { break-inside: avoid; padding-bottom: 2.6mm; }
 .entry + .entry { padding-top: 2.6mm; border-top: 0.3mm dashed var(--line); }
 .entry header { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; }
