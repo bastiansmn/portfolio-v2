@@ -85,6 +85,10 @@ const slug = (s: string) =>
 
 function renderHtml(): string {
   const photo = photoDataUri();
+  // Titre sous le nom : l'intitulé de poste chez l'employeur actuel (expérience
+  // la plus récente), sinon le premier rôle de l'en-tête du site.
+  const currentEmployer = employers.find((x) => x.name === experiences[0]?.employer);
+  const cvTitle = currentEmployer?.title ?? profile.roles[0] ?? "";
   const today = new Intl.DateTimeFormat("fr-FR", {
     month: "long",
     year: "numeric",
@@ -276,7 +280,6 @@ main { padding: 12mm 11mm 10mm 9mm; }
 /* En-tête */
 .top { margin-bottom: 6mm; display: flex; justify-content: space-between; align-items: center; gap: 6mm; }
 .photo { width: 22mm; height: 22mm; border-radius: 50%; object-fit: cover; flex: none; border: 0.6mm solid #fff; box-shadow: 0 0 0 0.4mm var(--line); }
-.prompt { font: 500 7.5pt var(--mono); color: var(--accent); margin-bottom: 1.5mm; }
 h1 { font-size: 24pt; line-height: 1.05; font-weight: 700; letter-spacing: -0.02em; }
 .title { font: 500 11pt var(--mono); color: var(--accent); margin-top: 1.5mm; }
 
@@ -336,9 +339,8 @@ footer { margin-top: 4mm; font: 400 6.6pt var(--mono); color: var(--faint); }
     <main>
       <div class="top">
         <div>
-          <p class="prompt">bastian@portfolio:~$ whoami</p>
           <h1>${esc(profile.name)}</h1>
-          <p class="title">${esc(profile.roles[0] ?? "")}</p>
+          <p class="title">${esc(cvTitle)}</p>
         </div>
         ${photo ? `<img class="photo" src="${photo}" alt="">` : ""}
       </div>

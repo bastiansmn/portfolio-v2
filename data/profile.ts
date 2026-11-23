@@ -8,7 +8,7 @@ export type BioLine = (string | { text: string; highlight: Highlight })[];
 
 export interface Profile {
   name: string;
-  /** Rôles affichés en en-tête. Le premier sert aussi de titre au CV. */
+  /** Rôles qui défilent dans l'en-tête du site. */
   roles: string[];
   location: string;
   /** Photo affichée dans le CV : chemin depuis la racine du dépôt, par ex. "assets/photo.jpg" (jpg, png ou webp). */
